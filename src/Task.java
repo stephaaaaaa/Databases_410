@@ -1,2 +1,61 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Task {
+
+    private int idStartValue = 0;
+
+    private int id;
+    private String label;
+    private String createDate; /* mm/dd/yyyy */
+    private String dueDate; /* mm/dd/yyyy */
+    private boolean isActive; // 1 if active, else 0
+    private boolean isComplete; // 1 if complete, else 0
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    /**
+     * Task constructor. We pass in a label to associate our new task with
+     * @param label
+     */
+    public Task(String label){
+        this.label = label; // init using the parameter
+
+        // using Date will let us always get the current date
+        String currentDate = new Date().toString();
+        this.createDate = dateFormat.format(currentDate);
+        this.isActive = true;
+        this.isComplete = false;
+        /* assign an id value and set so that new tasks
+           can be assigned a sequential value
+        */
+        if(idStartValue == 0)
+            this.id = idStartValue;
+        else
+            this.id = idStartValue++;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public void cancelTask(){
+        this.isActive = false;
+    }
+
+    public void finishTask(){
+        this.isComplete = true;
+    }
+
+    public int getTaskID(){ return this.id; }
+
+    public String getTaskLabel(){ return this.label; }
+
+    public String getCreateDate(){ return this.createDate; }
+
+    public String getDueDate() { return this.dueDate; }
+
+    public boolean getActiveStatus(){ return this.isActive; }
+
+    public boolean getCompletionStatus() { return this.isComplete; }
+
 }
