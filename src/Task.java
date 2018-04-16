@@ -1,4 +1,5 @@
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Task {
@@ -7,6 +8,7 @@ public class Task {
 
     private int id;
     private String label;
+    private ArrayList<String> keywords;
     private String createDate; /* mm/dd/yyyy */
     private String dueDate; /* mm/dd/yyyy */
     private boolean isActive; // 1 if active, else 0
@@ -25,6 +27,7 @@ public class Task {
         this.createDate = dateFormat.format(currentDate);
         this.isActive = true;
         this.isComplete = false;
+        this.keywords = new ArrayList<String>();
         /* assign an id value and set so that new tasks
            can be assigned a sequential value
         */
@@ -46,9 +49,15 @@ public class Task {
         this.isComplete = true;
     }
 
+    public void addKeyword(String keyword){
+        this.keywords.add(keyword);
+    }
+
     public int getTaskID(){ return this.id; }
 
     public String getTaskLabel(){ return this.label; }
+
+    public ArrayList<String> getKeywords(){ return this.keywords; }
 
     public String getCreateDate(){ return this.createDate; }
 
