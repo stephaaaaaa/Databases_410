@@ -1,1 +1,79 @@
+USE todo;
+
+-- CREATE A NEW TASK:
+
+--View currently-active tasks - list the task IDs, labels, create dates, and due dates (if assigned):
+--active
+SELECT task.task_id, task.task_label, task.time_stamp, task.due_date
+FROM task
+WHERE task.is_complete = 0
+AND task.is_cancelled = 0;
+
+--Add new tasks (e.g., add a new task with the label “ Finish Assignment ”; it should print the task ID once it has added the task)
+--add Finish Final Project
+INSERT INTO task (task_label) values ([INSERT_LABEL_IN_JAVA]);
+SELECT task_id FROM task WHERE task_label = [INSERT_LABEL_IN_JAVA]; -- the task_id is an arbitrary number.
+--If we want it to be in numerical order, we need to ORDER BY and number them in Java, or have a separate count for each value in a user's list.
+
+--Associate due dates with tasks - to make task 7 due on April 1:
+--     due 7 2018-04-01
+UPDATE task
+SET task.due_date = [INSERT_DATE_IN_JAVA]
+WHERE task_id = [INSERT_ID_IN_JAVA]; --might want to change this to a separate number from the ID
+
+--Associate tags with tasks - to tag task 7 with ‘school’ and ‘homework’:
+--     tag 7 school homework
+UPDATE task
+SET task.tag = [INSERT_TAG_IN_JAVA]
+WHERE task_id = [INSERT_ID_IN_JAVA]; --might want to change this to a separate number from the ID
+
+--Mark tasks as completed
+--finish 7
+UPDATE task
+SET task.is_complete = 1
+WHERE task_id = [INSERT_ID_IN_JAVA]; --might want to change this to a separate number from the ID
+
+--Mark tasks as canceled
+--cancel 7
+UPDATE task
+SET task.is_cancelled = 1
+WHERE task_id = [INSERT_ID_IN_JAVA]; --might want to change this to a separate number from the ID
+
+--Show details for a task
+--show 7
+SELECT * FROM task WHERE task.task_id = [INSERT_ID_IN_JAVA];
+
+--Show active tasks for a tag
+--     active school
+SELECT * FROM task
+WHERE task.is_complete = 0
+AND task.is_cancelled = 0
+AND task.tag LIKE [INSERT_TAG_IN_JAVA];
+
+--Show completed tasks for a tag
+--     completed school
+SELECT * FROM task
+WHERE task.is_complete = 1
+AND task.tag LIKE [INSERT_TAG_IN_JAVA];
+
+--Show tasks overdue (due date in the past but not completed)
+--      overdue
+SELECT * FROM task
+WHERE task.due_date < TIMESTAMP()
+AND task.is_complete = 0;
+
+--Show tasks due today, or due in the next 3 days
+--      due today
+SELECT * FROM task
+WHERE task.due_date = EXTRACT DATE FROM TIMESTAMP();
+
+--      due soon
+--SELECT * FROM task
+--WHERE task.due_date >EXTRACT DATE FROM TIMESTAMP();
+
+
+--Change the label of a task
+--     rename 7 Finish Final Project
+--Search for tasks by keyword (e.g. search for tasks having the word “project” in their label)
+--     search project
 

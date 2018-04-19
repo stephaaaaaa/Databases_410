@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS todo;
+USE todo;
+
 CREATE TABLE user (
     BroncoUserID INT NOT NULL PRIMARY KEY CHECK (BroncoUserID <= 999999999),
     BroncoPassword VARCHAR NOT NULL,
@@ -9,8 +12,8 @@ CREATE TABLE user (
 CREATE TABLE task (
     task_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     task_label VARCHAR(1000) NOT NULL,
-    is_cancelled BIT NOT NULL, -- 1 if cancelled, 0 if not cancelled
-    is_complete BIT NOT NULL, -- 1 if is complete, 0 if not complete
+    is_cancelled BIT NOT NULL DEFAULT(0), -- 1 if cancelled, 0 if not cancelled
+    is_complete BIT NOT NULL DEFAULT(0), -- 1 if is complete, 0 if not complete
     due_date DATE, --can be null, but can be added at a later time
     tag VARCHAR(500),
 
