@@ -2,6 +2,8 @@
  * @author  Stephanie Labastida
  */
 
+import asg.cliche.*;
+import java.io.IOException;
 
 public class ToDoListManager {
 
@@ -17,11 +19,11 @@ public class ToDoListManager {
             "'due today' \t\t\t\t\t= show all tasks due today\n'due soon' \t\t\t\t\t\t= show all tasks due in the next 3 days\n'rename' + [task_id] + [label] \t= rename the designated task\n" +
             "'search' + [token] \t\t\t\t= return all the tasks that contain the token in their label";
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException{
 
-        System.out.println("Welcome. Please follow usage:\n<BroncoUserid> <BroncoPassword> <sandboxUSerID> <sandbox password>" +
-                " <yourportnumber>");
-
+        //System.out.println("Welcome. Please follow usage:\n<BroncoUserid> <BroncoPassword> <sandboxUSerID> <sandbox password>" +
+          //      " <yourportnumber>");
+        ShellFactory.createConsoleShell("toDo_Master","","").commandLoop();
 //        if(args.length == 0){
 //            System.out.println("Too few arguments. " + usageMessage);
 //        }
