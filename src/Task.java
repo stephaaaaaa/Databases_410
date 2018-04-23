@@ -1,6 +1,8 @@
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import asg.cliche.*;
+
 
 public class Task {
     //Testing that I can push with this comment
@@ -37,6 +39,7 @@ public class Task {
             this.id = idStartValue++;
     }
 
+    @Command(name = "setDate", description = "Sets the due date", header = "Set the due date")
     public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
     }

@@ -20,12 +20,9 @@ public class ToDoListManager {
             "'search' + [token] \t\t\t\t= return all the tasks that contain the token in their label";
 
     public static void main(String[] args) throws IOException{
+        TaskGenerator generator = new TaskGenerator();
 
-        //System.out.println("Welcome. Please follow usage:\n<BroncoUserid> <BroncoPassword> <sandboxUSerID> <sandbox password>" +
-          //      " <yourportnumber>");
         ShellFactory.createConsoleShell("toDo_Master","","").commandLoop();
-//        if(args.length == 0){
-//            System.out.println("Too few arguments. " + usageMessage);
-//        }
+
     }
 }
