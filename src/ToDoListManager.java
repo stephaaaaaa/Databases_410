@@ -3,6 +3,9 @@
  */
 
 import asg.cliche.*;
+import jdk.nashorn.tools.ShellFunctions;
+import sun.awt.shell.ShellFolder;
+
 import java.io.IOException;
 
 public class ToDoListManager {
@@ -19,10 +22,15 @@ public class ToDoListManager {
             "'due today' \t\t\t\t\t= show all tasks due today\n'due soon' \t\t\t\t\t\t= show all tasks due in the next 3 days\n'rename' + [task_id] + [label] \t= rename the designated task\n" +
             "'search' + [token] \t\t\t\t= return all the tasks that contain the token in their label";
 
+    @Command(name = "exit")
+    public String exit(){
+        return "Goodbye";
+    }
+
     public static void main(String[] args) throws IOException{
         TaskGenerator generator = new TaskGenerator();
-
-        ShellFactory.createConsoleShell("toDo_Master","","").commandLoop();
+        ShellFactory.createConsoleShell("ToDoList_Manager> ", "Usage message goes here (?)",
+                new ToDoListManager()).commandLoop();
 
     }
 }

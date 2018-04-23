@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import asg.cliche.*;
 
 /**
  * An all purpose class that will create a list to keep track of
