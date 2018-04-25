@@ -83,3 +83,6 @@ WHERE task_id = [INSERT_ID_IN_JAVA];
 SELECT * FROM task
 WHERE task.task_label LIKE [INSERT_LABEL_IN_JAVA];
 
+--Retrieve tasks in order
+SELECT * FROM task
+ORDER BY task.due_date;
