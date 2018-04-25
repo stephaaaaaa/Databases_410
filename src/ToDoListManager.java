@@ -3,9 +3,9 @@
  */
 
 import asg.cliche.*;
-import java.sql.*; // for the database connection
 import java.io.IOException;
 import java.text.ParseException;
+import java.sql.*;
 
 public class ToDoListManager {
 
