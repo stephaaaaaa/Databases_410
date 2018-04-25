@@ -11,8 +11,8 @@ public class Task {
     private int id;
     private String label;
     private ArrayList<String> keywords;
-    private String createDate; /* mm/dd/yyyy */
-    private String dueDate; /* mm/dd/yyyy */
+    private Date createDate; /* mm/dd/yyyy */
+    private Date dueDate; /* mm/dd/yyyy */
     private boolean isActive; // 1 if active, else 0
     private boolean isComplete; // 1 if complete, else 0
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -25,8 +25,7 @@ public class Task {
         this.label = label; // init using the parameter
 
         // using Date will let us always get the current date
-        String currentDate = new Date().toString();
-        this.createDate = dateFormat.format(currentDate);
+        this.createDate = new Date();
         this.isActive = true;
         this.isComplete = false;
         this.keywords = new ArrayList<String>();
@@ -39,8 +38,7 @@ public class Task {
             this.id = idStartValue++;
     }
 
-    @Command(name = "setDate", description = "Sets the due date", header = "Set the due date")
-    public void setDueDate(String dueDate) {
+    public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -56,15 +54,21 @@ public class Task {
         this.keywords.add(keyword);
     }
 
+    public String showDetails(){
+        return "Task ID: " + id + "\nLabel: " + label + "\nCreation Date: " + createDate + "\nDue Date: " + dueDate + "\n";
+    }
+
     public int getTaskID(){ return this.id; }
 
     public String getTaskLabel(){ return this.label; }
 
+    public void setTaskLabel(String newLabel) {this.label = newLabel;}
+
     public ArrayList<String> getKeywords(){ return this.keywords; }
 
-    public String getCreateDate(){ return this.createDate; }
+    public Date getCreateDate(){ return this.createDate; }
 
-    public String getDueDate() { return this.dueDate; }
+    public Date getDueDate() { return this.dueDate; }
 
     public boolean getActiveStatus(){ return this.isActive; }
 
