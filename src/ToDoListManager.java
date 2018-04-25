@@ -51,7 +51,6 @@ public class ToDoListManager {
 
     }
 
-
     public static void main(String[] args) throws IOException{
         TaskGenerator generator = new TaskGenerator();
         ShellFactory.createConsoleShell("ToDoList_Manager", "Welcome to ToDoList_Manager!\nTo start, type" +
