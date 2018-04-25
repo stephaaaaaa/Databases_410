@@ -68,12 +68,18 @@ SELECT * FROM task
 WHERE task.due_date = EXTRACT DATE FROM TIMESTAMP();
 
 --      due soon
---SELECT * FROM task
---WHERE task.due_date >EXTRACT DATE FROM TIMESTAMP();
-
+SELECT * FROM task
+WHERE task.due_date <= DATEADD(day, 3, EXTRACT DATE FROM TIMESTAMP())
+AND task.due_date >= EXTRACT DATE FROM TIMESTAMP();
 
 --Change the label of a task
 --     rename 7 Finish Final Project
+UPDATE task
+SET task.label = [INSERT_LABEL_IN_JAVA]
+WHERE task_id = [INSERT_ID_IN_JAVA];
+
 --Search for tasks by keyword (e.g. search for tasks having the word “project” in their label)
 --     search project
+SELECT * FROM task
+WHERE task.task_label LIKE [INSERT_LABEL_IN_JAVA];
 
