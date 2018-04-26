@@ -1,5 +1,5 @@
 /**
- * @author  Stephanie Labastida
+ * @author  Stephanie Labastida and Sadie Shirts
  */
 
 import asg.cliche.*;
@@ -13,9 +13,15 @@ public class ToDoListManager {
     private String usageMessage_NotSignedIn;
     private String usageMessage_SignedIn;
     private static TaskTracker taskTracker;
+    private static String b_usr;
+    private static String b_pswd;
+    private static String s_usr;
+    private static String s_pswd;
+    private static int pNum;
+    private static Connection conn;
 
     public ToDoListManager(){
-        isSignedIn = true; // set to true for testing purposes, and false for deployment
+        //isSignedIn = true; // set to true for testing purposes, and false for deployment
         usageMessage_NotSignedIn = "Type 'ssh'. Then, enter Bronco credentials, sandbox credentials, and your port number.\n" +
                 "<Bronco User> <Bronco Password> <Sandbox User> <Sandbox Password> <Port Number>\n";
         usageMessage_SignedIn = "Usage:\n'active' \t\t\t\t\t\t\t\t\t= shows all active tasks\n'add' + "
@@ -26,21 +32,23 @@ public class ToDoListManager {
                 + "'completed' + \"[keyword]\" \t\t\t\t\t= show the completed tasks associated with the tag\n'overdue' \t\t\t\t\t\t\t\t\t= show all overdue tasks\n"
                 + "'due today' \t\t\t\t\t\t\t\t= show all tasks due today\n'due soon' \t\t\t\t\t\t\t\t\t= show all tasks due in the next 3 days\n'rename' + [task_id] + \"[label]\" \t\t\t= rename the designated task\n"
                 + "'search' + [token] \t\t\t\t\t\t\t= return all the tasks that contain the token in their label\n";
-        taskTracker = new TaskTracker();
+        //conn = makeConnection(); //moved to ssh so that we have credentials to sign in
+        //taskTracker = new TaskTracker(); //need to pass conn into TaskTracker //moved to ssh for same reason
     }
 
     @Command(name = "ssh")
     public String enterCredentials(String bronco_user, String bronco_password,
                                  String sandbox_user, String sandbox_password, int portNum){
         // assigning to local method variables to make sure that ssh + args is working
-        String b_usr = bronco_user;
-        String b_pswd = bronco_password;
-        String s_usr = sandbox_user;
-        String s_pswd = sandbox_password;
-        int pNum = portNum;
-
+        b_usr = bronco_user;
+        b_pswd = bronco_password;
+        s_usr = sandbox_user;
+        s_pswd = sandbox_password;
+        pNum = portNum;
 
         isSignedIn = true;
+        conn = makeConnection();
+        taskTracker = new TaskTracker();
         return "Successful sign in!\n";
     }
 
@@ -169,10 +177,20 @@ public class ToDoListManager {
     /// BEGIN CONNECTION STUFF
     public static Connection makeConnection() {
         try {
-            Connection conn = null;
+            //Connection conn = null;
             conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:5785/test?verifyServerCertificate=false&useSSL=true", "msandbox",
-                    "Sa03d48h!");
+                    //uses variabes to make connection
+                     "jdbc:mysql://localhost:" + pNum + "/test?verifyServerCertificate=false&useSSL=true", s_usr,
+                     s_pswd
+
+                    //This sign in is for Sadie
+//                    "jdbc:mysql://localhost:5818/test?verifyServerCertificate=false&useSSL=true", "msandbox",
+//                    "cs410*ss"
+
+                    //This sign in is for Steph
+//                    "jdbc:mysql://localhost:5785/test?verifyServerCertificate=false&useSSL=true", "msandbox",
+//                    "Sa03d48h!"
+            );
             // Do something with the Connection
             System.out.println("Database [test db] connection succeeded!");
             System.out.println();
@@ -190,15 +208,36 @@ public class ToDoListManager {
     /// END CONNECTION STUFF
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException{
-//
+        try {
+
+            //Class.forName("com.mysql.jdbc.Driver").newInstance();
+            System.out.println();
+            System.out.println("JDBC driver loaded");
+            System.out.println();
+
+            ShellFactory.createConsoleShell("ToDoList_Manager", "Welcome to ToDoList_Manager!\nTo start, type" +
+                            " 'ssh', followed by Bronco credentials , Sandbox credentials, and user port number.\n" +
+                            "Type 'help' or '-h' for help.\n",
+                    // Bronco credentials, sandbox credentials, and user port number.
+                    new ToDoListManager()).commandLoop();
+
+            //Connection conn = makeConnection();
+
+            //runQuery(conn);
+            conn.close();
+            System.out.println();
+            System.out.println("Database [test db] connection closed");
+            System.out.println();
+        } catch (Exception ex) {
+            // handle the error
+            System.err.println(ex);
+        }
+
+
+        //
 //        Class.forName(""); // database driver class
 //        Connection connection = DriverManager.getConnection("","",""); // connection url, username, password
 //
 
-        ShellFactory.createConsoleShell("ToDoList_Manager", "Welcome to ToDoList_Manager!\nTo start, type" +
-                        " 'ssh', followed by Bronco credentials, Sandbox credentials, and user port number.\n" +
-                        "Type 'help' or '-h' for help.\n",
-                // Bronco credentials, sandbox credentials, and user port number.
-                new ToDoListManager()).commandLoop();
     }
 }
