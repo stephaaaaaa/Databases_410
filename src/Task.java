@@ -3,12 +3,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import asg.cliche.*;
 
-
 public class Task {
-    //Testing that I can push with this comment
-    private int idStartValue = 0;
-
-    private int id;
+    private int id = 1;
     private String label;
     private ArrayList<String> keywords;
     private Date createDate; /* mm/dd/yyyy */
@@ -32,10 +28,10 @@ public class Task {
         /* assign an id value and set so that new tasks
            can be assigned a sequential value
         */
-        if(idStartValue == 0)
-            this.id = idStartValue;
-        else
-            this.id = idStartValue++;
+    }
+
+    public void setTaskID(int ID){
+        this.id = id;
     }
 
     public void setDueDate(Date dueDate) {
@@ -55,7 +51,7 @@ public class Task {
     }
 
     public String showDetails(){
-        return "Task ID: " + id + "\nLabel: " + label + "\nCreation Date: " + createDate + "\nDue Date: " + dueDate + "\n";
+        return "Task ID: " + id + "\nLabel: " + label + "\nCreation Date: " + createDate + "\nDue Date: " + dueDate + "\n\n";
     }
 
     public int getTaskID(){ return this.id; }

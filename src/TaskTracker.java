@@ -14,8 +14,9 @@ import java.text.SimpleDateFormat;
  */
 public class TaskTracker {
     private LinkedList<Task> taskList;
-    Date today;
-    String activeTasks;
+    private Date today;
+    private String activeTasks;
+
 
     public TaskTracker(){
         taskList = new LinkedList<>();
@@ -26,18 +27,18 @@ public class TaskTracker {
 
     public Task addTask(String taskName){
         Task newTask = new Task(taskName);
+        //newTask.setTaskID(currentTaskID);
         taskList.add(newTask);
         return newTask;
     }
 
     // Setting return value to String so an error message can be returned
     public String setDueDate(int taskNum, String dueDate) throws ParseException{
-        Date date_due = new SimpleDateFormat().parse(dueDate);
+        Date date_due = new SimpleDateFormat("yyyy-MM-dd").parse(dueDate);
         for(Task task:taskList){
             if(task.getTaskID() == taskNum)
                 task.setDueDate(date_due);
-            else
-                return "No tasks in the list correspond to ID value" + taskNum;
+            else return "No tasks in the list correspond to ID value" + taskNum;
         }
         return "";
     }
@@ -58,11 +59,10 @@ public class TaskTracker {
         return activeTasks;
     }
 
-    public String addKeywords(int taskNum, String[] tags){
+    public String addKeywords(int taskNum, String tags){
         for(Task task:taskList){
             if(task.getTaskID() == taskNum)
-                for(String tag:tags)
-                    task.addKeyword(tag);
+                    task.addKeyword(tags);
             else
                 return "No tasks in the list correspond to ID value" + taskNum + ".";
         }
