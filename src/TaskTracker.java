@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import asg.cliche.*;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.sql.*;
 
 /**
  * An all purpose class that will create a list to keep track of
@@ -16,9 +17,11 @@ public class TaskTracker {
     private LinkedList<Task> taskList;
     private Date today;
     private String activeTasks;
+    private static Connection conn;
 
 
-    public TaskTracker(){
+    public TaskTracker(Connection conn){
+    	this.conn = conn;
         taskList = new LinkedList<>();
         today = new Date(); // gets the current date and time
         activeTasks = "------------------------- ACTIVE TASKS -------------------------\n";
@@ -53,8 +56,15 @@ public class TaskTracker {
 
     public String showActiveTasks(){
         for(Task task:taskList){
-            if(task.getActiveStatus() == true)
-                activeTasks += task.showDetails();
+            if(task.getActiveStatus() == true) {
+            	String query = 
+    			"SELECT task.task_id, task.task_label, task.time_stamp, task.due_date\n" +
+    			"FROM task\n" + 
+    			"WHERE task.is_complete = 0\n" + 
+    			"AND task.is_cancelled = 0;";
+            	runQuery(query);
+                //activeTasks += task.showDetails();
+            }
         }
         return activeTasks;
     }
@@ -168,5 +178,50 @@ public class TaskTracker {
         return tasksWithKeyword;
     }
 
+    public static void runQuery(String query) {
+
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			//String query = "SELECT * FROM Persons where LastName = ?";
+			String name = "Data";
+
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, name);
+			rs = stmt.executeQuery();
+
+			// Now do something with the ResultSet ....
+			boolean rowsLeft = true;
+			rs.first();
+			while (rowsLeft) {
+				System.out.println(rs.getInt(1) + ":" + rs.getString(2) + ":" + rs.getString(3) + ":" + rs.getString(4)
+						+ ":" + rs.getString(5));
+				rowsLeft = rs.next();
+			}
+		} catch (SQLException ex) {
+			// handle any errors
+			System.err.println("SQLException: " + ex.getMessage());
+			System.err.println("SQLState: " + ex.getSQLState());
+			System.err.println("VendorError: " + ex.getErrorCode());
+		} finally {
+			// it is a good idea to release resources in a finally{} block
+			// in reverse-order of their creation if they are no-longer needed
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException sqlEx) {
+				} // ignore
+				rs = null;
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException sqlEx) {
+				} // ignore
+				stmt = null;
+			}
+		}
+	}
 
 }

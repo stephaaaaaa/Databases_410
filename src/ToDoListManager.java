@@ -48,7 +48,7 @@ public class ToDoListManager {
 
         isSignedIn = true;
         conn = makeConnection();
-        taskTracker = new TaskTracker();
+        taskTracker = new TaskTracker(conn);
         return "Successful sign in!\n";
     }
 
