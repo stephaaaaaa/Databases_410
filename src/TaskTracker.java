@@ -120,8 +120,52 @@ public class TaskTracker {
         return completedTasks;
     }
 
-    public void renameTask(Task toRename, String newLabel){
-        toRename.setTaskLabel(newLabel);
+    public String showOverdueTasks(){
+        String overdueTasks = "";
+        for(Task task:taskList){
+            if(task.getDueDate().before(today))
+                overdueTasks += task.showDetails();
+        }
+        if(overdueTasks.equals(""))
+            return "No overdue tasks.";
+        return "";
+    }
+
+    public String showDueSoon(){
+        String dueSoon = "";
+        Date tomorrow = new Date(System.currentTimeMillis() + 86400000);
+        Date inTwoDays = new Date(System.currentTimeMillis() + 86400000 * 2);
+        Date inThreeDays = new Date(System.currentTimeMillis() + 86400000 * 3);
+        for(Task task:taskList){
+            Date dueDate = task.getDueDate();
+            if(dueDate.equals(today) || dueDate.equals(tomorrow) ||
+                    dueDate.equals(inTwoDays) || dueDate.equals(inThreeDays)){
+                dueSoon += task.showDetails();
+            }
+        }
+        if(dueSoon.equals(""))
+            return "No tasks are due within the next three days.";
+        return dueSoon;
+    }
+
+    public String renameTask(int taskNum, String newLabel){
+        for(Task task:taskList){
+            if(task.getTaskID() == taskNum){
+                task.setTaskLabel(newLabel);
+            } else return "No tasks in the list correspond to ID value" + taskNum + ".";
+        }
+        return "";
+    }
+
+    public String searchByKeyword(String keyword){
+        String tasksWithKeyword = "";
+        for(Task task:taskList){
+            if(task.getKeywords().contains(keyword))
+                tasksWithKeyword += task.showDetails();
+        }
+        if(tasksWithKeyword.equals(""))
+            return "No tasks in the list contain the keyword: " + keyword + ".";
+        return tasksWithKeyword;
     }
 
 

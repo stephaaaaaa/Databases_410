@@ -121,6 +121,71 @@ public class ToDoListManager {
         return "";
     }
 
+    @Command(name = "completed")
+    public String showCompletedPerTag(String tag){
+        if(signedIn() == true)
+            return taskTracker.showCompletedTasks();
+        return "";
+    }
+
+    @Command(name = "overdue")
+    public String showOverdue(){
+        if(signedIn() == true)
+            return taskTracker.showOverdueTasks();
+        return "";
+    }
+
+    @Command(name = "due today")
+    public String showDueToday(){
+        if(signedIn() == true)
+            return taskTracker.showOverdueTasks();
+        return "";
+    }
+
+    @Command(name = "due soon")
+    public String showDueSoon(){
+        if(signedIn() == true)
+            return taskTracker.showDueSoon();
+        return "";
+    }
+
+    @Command(name = "rename")
+    public String rename(int taskNum, String newName){
+        if(signedIn() == true)
+            return taskTracker.renameTask(taskNum, newName);
+        return "";
+    }
+
+    @Command(name = "search")
+    public String searchByKeyword(String keyword){
+        if(signedIn() == true)
+            return taskTracker.searchByKeyword(keyword);
+        return "";
+    }
+
+    /// BEGIN CONNECTION STUFF
+    public static Connection makeConnection() {
+        try {
+            Connection conn = null;
+            conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:5785/test?verifyServerCertificate=false&useSSL=true", "msandbox",
+                    "Sa03d48h!");
+            // Do something with the Connection
+            System.out.println("Database [test db] connection succeeded!");
+            System.out.println();
+            return conn;
+        } catch (SQLException ex) {
+            // handle any errors
+            System.err.println("SQLException: " + ex.getMessage());
+            System.err.println("SQLState: " + ex.getSQLState());
+            System.err.println("VendorError: " + ex.getErrorCode());
+        }
+        return null;
+    }
+
+
+    /// END CONNECTION STUFF
+
     public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException{
 //
 //        Class.forName(""); // database driver class
@@ -132,7 +197,5 @@ public class ToDoListManager {
                         "Type 'help' or '-h' for help.\n",
                 // Bronco credentials, sandbox credentials, and user port number.
                 new ToDoListManager()).commandLoop();
-
-
     }
 }
