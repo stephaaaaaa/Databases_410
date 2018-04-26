@@ -31,18 +31,22 @@ public class TaskTracker {
     public Task addTask(String taskName){
         Task newTask = new Task(taskName);
         //newTask.setTaskID(currentTaskID);
-        taskList.add(newTask);
+        String query = "INSERT INTO task (task_label) values (" + taskName + ");";
+        runQuery(query);
+        //taskList.add(newTask);
         return newTask;
     }
 
     // Setting return value to String so an error message can be returned
     public String setDueDate(int taskNum, String dueDate) throws ParseException{
         Date date_due = new SimpleDateFormat("yyyy-MM-dd").parse(dueDate);
-        for(Task task:taskList){
-            if(task.getTaskID() == taskNum)
-                task.setDueDate(date_due);
-            else return "No tasks in the list correspond to ID value" + taskNum;
-        }
+        String query = "UPDATE task SET task.due_date = " + date_due + "WHERE task_id = " + taskNum + ";";
+        runQuery(query);				
+//        for(Task task:taskList){
+//            if(task.getTaskID() == taskNum)
+//                task.setDueDate(date_due);
+//            else return "No tasks in the list correspond to ID value" + taskNum;
+//        }
         return "";
     }
 
@@ -55,8 +59,8 @@ public class TaskTracker {
     }
 
     public String showActiveTasks(){
-        for(Task task:taskList){
-            if(task.getActiveStatus() == true) {
+       // for(Task task:taskList){
+            //if(task.getActiveStatus() == true) {
             	String query = 
     			"SELECT task.task_id, task.task_label, task.time_stamp, task.due_date\n" +
     			"FROM task\n" + 
@@ -64,8 +68,8 @@ public class TaskTracker {
     			"AND task.is_cancelled = 0;";
             	runQuery(query);
                 //activeTasks += task.showDetails();
-            }
-        }
+            //}
+       // }
         return activeTasks;
     }
 
