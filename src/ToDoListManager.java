@@ -58,7 +58,6 @@ public class ToDoListManager {
         ssh_man.sshSignIn(b_usr, b_pswd, s_usr, s_pswd, pNum);
         System.out.println("passed the signIn function in ssh_manager");
 
-        //conn = makeConnection();
         taskTracker = new TaskTracker(conn);
         return "Successful sign in!\n";
     }

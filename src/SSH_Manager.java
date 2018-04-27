@@ -17,7 +17,7 @@ public class SSH_Manager {
         this.stmt2 = stmt2;
     }
 
-    public static void sshSignIn(String bronco_user, String bronco_password, String sandbox_user,
+    public static String sshSignIn(String bronco_user, String bronco_password, String sandbox_user,
                                  String sandbox_password, int user_PortNum)
     throws  SQLException, ClassNotFoundException, JSchException{
 
@@ -28,7 +28,7 @@ public class SSH_Manager {
                 String strSshHost = "onyx.boisestate.edu";          // hostname or ip or SSH server
                 int nSshPort = 22;                                    // remote SSH host port number
                 String strRemoteHost = "localhost";  // hostname or ip of your database server
-                int nLocalPort = 3367;  // local port number use to bind SSH tunnel
+                int nLocalPort = 64736;  // local port number use to bind SSH tunnel // Supposed to be any local one on your machine
 
                 String strDbUser = sandbox_user;                    // database loging username
                 String strDbPassword = sandbox_password;                    // database login password
@@ -40,7 +40,8 @@ public class SSH_Manager {
 
                 // Load database driver and get connection
                 Class.forName("com.mysql.jdbc.Driver");
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:"+ nLocalPort, strDbUser, strDbPassword);
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:"+nLocalPort, strDbUser, strDbPassword);
+
 
                 // Executing transactions
                 conn.setAutoCommit(false);//transaction block starts
@@ -72,25 +73,8 @@ public class SSH_Manager {
                 System.out.println(e.getMessage());
                 conn.rollback(); // In case of any exception, we roll back to the database state we had before starting this transaction
             }
-//            finally{
-//
-//                /*
-//                 * STEP 5
-//                 * CLOSE CONNECTION AND SSH SESSION
-//                 *
-//                 * */
-//
-//                if(stmt!=null)
-//                    stmt.close();
-//
-//                if(stmt2!=null)
-//                    stmt.close();
-//
-//                conn.setAutoCommit(true); // restore dafault mode
-//                conn.close();
-//                sess.disconnect();
-//            }
-            System.out.println("Sign in successful.");
+
+            return "Sign in successful.";
 
     }
 
