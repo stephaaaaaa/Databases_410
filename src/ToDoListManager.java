@@ -4,6 +4,7 @@
 
 import asg.cliche.*;
 import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -21,6 +22,8 @@ public class ToDoListManager {
     private static String s_pswd;
     private static int pNum;
     private static Connection conn;
+    private static Session session;
+    private static Statement stmt, stmt2;
 
     public ToDoListManager(){
         //isSignedIn = true; // set to true for testing purposes, and false for deployment
@@ -40,16 +43,22 @@ public class ToDoListManager {
 
     @Command(name = "ssh")
     public String enterCredentials(String bronco_user, String bronco_password,
-                                 String sandbox_user, String sandbox_password, int portNum){
+                                 String sandbox_user, String sandbox_password, int portNum)
+                    throws JSchException, ClassNotFoundException, SQLException{
         // assigning to local method variables to make sure that ssh + args is working
+        isSignedIn = false;
+
         b_usr = bronco_user;
         b_pswd = bronco_password;
         s_usr = sandbox_user;
         s_pswd = sandbox_password;
         pNum = portNum;
 
-        isSignedIn = false;
-        conn = makeConnection();
+        SSH_Manager ssh_man = new SSH_Manager(conn, session, stmt, stmt2);
+        ssh_man.sshSignIn(b_usr, b_pswd, s_usr, s_pswd, pNum);
+        System.out.println("passed the signIn function in ssh_manager");
+
+        //conn = makeConnection();
         taskTracker = new TaskTracker(conn);
         return "Successful sign in!\n";
     }
@@ -213,13 +222,12 @@ public class ToDoListManager {
         try {
 
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            System.out.println();
             System.out.println("JDBC driver loaded");
-            System.out.println();
-            System.out.println("Attempting to make connection ...");
-            Connection connection = DatabaseManager.makeConnection();
-            DatabaseManager.runQuery(connection);
-            System.out.println("Connection made!");
+//            System.out.println();
+//            System.out.println("Attempting to make connection ...");
+//            Connection conn = makeConnection();
+//            DatabaseManager.runQuery(connection);
+//            System.out.println("Connection made!");
 
             ShellFactory.createConsoleShell("ToDoList_Manager", "Welcome to ToDoList_Manager!\nTo start, type" +
                             " 'ssh', followed by Bronco credentials , Sandbox credentials, and user port number.\n" +
