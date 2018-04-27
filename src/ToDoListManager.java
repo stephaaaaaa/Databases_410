@@ -3,6 +3,8 @@
  */
 
 import asg.cliche.*;
+import com.jcraft.jsch.JSchException;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.sql.*;
@@ -46,7 +48,7 @@ public class ToDoListManager {
         s_pswd = sandbox_password;
         pNum = portNum;
 
-        isSignedIn = true;
+        isSignedIn = false;
         conn = makeConnection();
         taskTracker = new TaskTracker(conn);
         return "Successful sign in!\n";
@@ -207,7 +209,7 @@ public class ToDoListManager {
 
     /// END CONNECTION STUFF
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException{
+    public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException, ClassNotFoundException, JSchException {
         try {
 
             Class.forName("com.mysql.jdbc.Driver").newInstance();
