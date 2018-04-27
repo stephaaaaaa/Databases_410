@@ -210,10 +210,14 @@ public class ToDoListManager {
     public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException{
         try {
 
-            //Class.forName("com.mysql.jdbc.Driver").newInstance();
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
             System.out.println();
             System.out.println("JDBC driver loaded");
             System.out.println();
+            System.out.println("Attempting to make connection ...");
+            Connection connection = DatabaseManager.makeConnection();
+            DatabaseManager.runQuery(connection);
+            System.out.println("Connection made!");
 
             ShellFactory.createConsoleShell("ToDoList_Manager", "Welcome to ToDoList_Manager!\nTo start, type" +
                             " 'ssh', followed by Bronco credentials , Sandbox credentials, and user port number.\n" +
