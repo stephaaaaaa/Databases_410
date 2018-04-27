@@ -142,8 +142,6 @@ public class JDBCexample {
             System.out.println(res);
         }
         return stmt;
-
-
     }
 
 }
