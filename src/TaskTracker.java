@@ -64,9 +64,9 @@ public class TaskTracker {
        // for(Task task:taskList){
             //if(task.getActiveStatus() == true) {
             	String query = 
-    			"SELECT task.task_id, task.task_label, task.time_stamp, task.due_date\n" +
-    			"FROM task\n" + 
-    			"WHERE task.is_complete = 0\n" + 
+    			"SELECT task.task_id, task.task_label, task.time_stamp, task.due_date " +
+    			"FROM task " + 
+    			"WHERE task.is_complete = 0 " + 
     			"AND task.is_cancelled = 0;";
             	runQuery(query);
                 //activeTasks += task.showDetails();

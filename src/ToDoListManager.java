@@ -81,7 +81,7 @@ public class ToDoListManager {
     @Command(name = "active")
     public String active(){
         if(signedIn() == true)
-            return taskTracker.showActiveTasks();
+            taskTracker.showActiveTasks();
         return "No active tasks.";
     }
 
@@ -122,7 +122,7 @@ public class ToDoListManager {
     @Command(name = "show")
     public String showTaskDetails(int taskNum){
         if(signedIn() == true){
-            return taskTracker.showTask(taskNum);
+            taskTracker.showTask(taskNum);
         }
         return "";
     }
@@ -130,49 +130,49 @@ public class ToDoListManager {
     @Command(name = "active")
     public String showActivePerTag(String tag){
         if(signedIn() == true)
-            return taskTracker.showActiveForTag(tag);
+            taskTracker.showActiveForTag(tag);
         return "";
     }
 
     @Command(name = "completed")
     public String showCompletedPerTag(String tag){
         if(signedIn() == true)
-            return taskTracker.showCompletedTasks();
+            taskTracker.showCompletedTasks();
         return "";
     }
 
     @Command(name = "overdue")
     public String showOverdue(){
         if(signedIn() == true)
-            return taskTracker.showOverdueTasks();
+            taskTracker.showOverdueTasks();
         return "";
     }
 
     @Command(name = "due today")
     public String showDueToday(){
         if(signedIn() == true)
-            return taskTracker.showOverdueTasks();
+            taskTracker.showOverdueTasks();
         return "";
     }
 
     @Command(name = "due soon")
     public String showDueSoon(){
         if(signedIn() == true)
-            return taskTracker.showDueSoon();
+            taskTracker.showDueSoon();
         return "";
     }
 
     @Command(name = "rename")
     public String rename(int taskNum, String newName){
         if(signedIn() == true)
-            return taskTracker.renameTask(taskNum, newName);
+            taskTracker.renameTask(taskNum, newName);
         return "";
     }
 
     @Command(name = "search")
     public String searchByKeyword(String keyword){
         if(signedIn() == true)
-            return taskTracker.searchByKeyword(keyword);
+            taskTracker.searchByKeyword(keyword);
         return "";
     }
 
