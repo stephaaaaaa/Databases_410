@@ -54,7 +54,7 @@ public class Queries {
         }
     }
 
-    public static void run_AddQuery(String query, Connection conn){
+    public static void run_UpdateQuery(String query, Connection conn){
         PreparedStatement stmt = null;
         int result = 0;
 

@@ -39,19 +39,19 @@ public class TaskTracker {
 
     public void addTask(String taskName){
         String query = "INSERT INTO task (task_label) values (" + "\"" + taskName + "\"" + ");";
-		Queries.run_AddQuery(query, conn);
+		Queries.run_UpdateQuery(query, conn);
 	}
 
     // Setting return value to String so an error message can be returned
     public void setDueDate(int taskNum, String dueDate) throws ParseException{
-        Date date_due = new SimpleDateFormat("yyyy-MM-dd").parse(dueDate);
-        String query = "UPDATE task SET task.due_date = " + date_due + "WHERE task_id = " + taskNum + ";";
-        Queries.run_SetDueDateQuery(query);
+        String query = "UPDATE task SET task.due_date = " + "\"" + dueDate + "\"" + "WHERE task_id = " +
+				"\"" + taskNum + "\"" + ";";
+        Queries.run_UpdateQuery(query, conn);
     }
 
     public void removeTask(String taskName){
-    	String query = "DELETE FROM task WHERE task_label = " + taskName + ";";
-    	Queries.run_RemoveTaskQuery(query);
+    	String query = "DELETE FROM task WHERE task_label = " + "\"" +taskName + "\"" + ";";
+    	Queries.run_UpdateQuery(query, conn);
     }
 
 
