@@ -96,15 +96,4 @@ public class SSH_Manager {
         return session;
     }
 
-    public static Statement insertLocations(Connection con, String[] data) throws SQLException {
-        String sql;
-        java.sql.Statement stmt = null;
-        stmt = con.createStatement();
-        for(int i=0;i<data.length;i++){
-            sql = "INSERT INTO `Company`.`dept_locations`(`dnumber`,`dlocation`)VALUES(1,'"+data[i]+"')";
-            int res = stmt.executeUpdate(sql);
-            System.out.println(res);
-        }
-        return stmt;
-    }
 }

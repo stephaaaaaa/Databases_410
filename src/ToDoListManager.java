@@ -217,36 +217,14 @@ public class ToDoListManager {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException, ClassNotFoundException, JSchException {
         try {
-
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            System.out.println("JDBC driver loaded");
-//            System.out.println();
-//            System.out.println("Attempting to make connection ...");
-//            Connection conn = makeConnection();
-//            DatabaseManager.runQuery(connection);
-//            System.out.println("Connection made!");
-
             ShellFactory.createConsoleShell("ToDoList_Manager", "Welcome to Task Tracker!\nTo start, type" +
                             " 'ssh', followed by Bronco credentials , Sandbox credentials, and user port number.\n" +
                             "Type 'help' or '-h' for help.\n",
                     new ToDoListManager()).commandLoop();
 
-
-//
-//            runQuery(conn);
-//            conn.close();
-//            System.out.println();
-//            System.out.println("Database [test db] connection closed");
-//            System.out.println();
         } catch (Exception ex) {
             System.err.println(ex);
         }
-
-
-        //
-//        Class.forName(""); // database driver class
-//        Connection connection = DriverManager.getConnection("","",""); // connection url, username, password
-//
-
     }
 }
