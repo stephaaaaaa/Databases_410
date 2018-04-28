@@ -59,7 +59,8 @@ public class ToDoListManager {
         System.out.println("passed the signIn function in ssh_manager");
 
         taskTracker = new TaskTracker(conn);
-        return "Successful sign in!\n";
+        isSignedIn = true;
+        return "Sign in successful!\n";
     }
 
     @Command(name = "help", abbrev = "-h")
