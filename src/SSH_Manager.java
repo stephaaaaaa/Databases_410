@@ -30,9 +30,9 @@ public class SSH_Manager {
                 String strRemoteHost = "localhost";  // hostname or ip of your database server
                 int nLocalPort = 64736;  // local port number use to bind SSH tunnel // Supposed to be any local one on your machine
 
-                String strDbUser = sandbox_user;                    // database loging username
-                String strDbPassword = sandbox_password;                    // database login password
-                int nRemotePort = user_PortNum; // remote port number of your database
+                String strDbUser = sandbox_user;             // database login username
+                String strDbPassword = sandbox_password;     // database login password
+                int nRemotePort = user_PortNum;              // remote port number of your database
 
                 // SSH Tunnel
                 sess = doSshTunnel(strSshUser, strSshPassword, strSshHost, nSshPort, strRemoteHost, nLocalPort, nRemotePort);
@@ -40,7 +40,7 @@ public class SSH_Manager {
 
                 // Load database driver and get connection
                 Class.forName("com.mysql.jdbc.Driver");
-                String connectionURL = "jdbc:mysql://localhost:" + nLocalPort + "/CS410_Database"
+                String connectionURL = "jdbc:mysql://localhost:" + nLocalPort + "/todo"
                         + "?verifyServerCertificate=false&useSSL=true";
                 conn = DriverManager.getConnection(connectionURL, strDbUser, strDbPassword);
 
