@@ -229,19 +229,15 @@ public class TaskTracker {
 		ResultSet rs = null;
 
 		try {
-			//String query = "SELECT * FROM Persons where LastName = ?";
-			String name = "Data";
-
 			stmt = conn.prepareStatement(query);
-			stmt.setString(1, name);
 			rs = stmt.executeQuery();
 
 			// Now do something with the ResultSet ....
 			boolean rowsLeft = true;
 			rs.first();
 			while (rowsLeft) {
-				System.out.println(rs.getInt(1) + ":" + rs.getString(2) + ":" + rs.getString(3) + ":" + rs.getString(4)
-						+ ":" + rs.getString(5));
+				System.out.println("Task "+ rs.getInt(1) + ":\n\"" + rs.getString(2) + "\"\nCreation Date: " +
+						rs.getString(3) + "\nDue Date: " + rs.getString(4) + "\n");
 				rowsLeft = rs.next();
 			}
 		} catch (SQLException ex) {

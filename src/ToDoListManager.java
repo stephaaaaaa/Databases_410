@@ -94,11 +94,6 @@ public class ToDoListManager {
         return "Exiting ToDoList_Manager ...";
     }
 
-    @Command(name = "clear")
-    public void clear(){
-
-    }
-
     // helper method for all the task methods
     public boolean signedIn(){
         if(isSignedIn == true)
@@ -110,7 +105,8 @@ public class ToDoListManager {
     public String active(){
         if(signedIn() == true)
             taskTracker.showActiveTasks();
-        return "No active tasks.";
+        else return "Not signed in to Task Tracker.";
+        return "";
     }
 
     // Works, except for the task ID
@@ -118,26 +114,32 @@ public class ToDoListManager {
     public String add(String newTaskLabel){
         if(signedIn() == true)
             taskTracker.addTask(newTaskLabel);
-        return "Not signed in to Task Tracker.";
+        else return "Not signed in to Task Tracker.";
+        return "";
     }
 
     // Works
     @Command(name = "due")
-    public void dueTasks(int taskNum, String dueDate) throws ParseException {
+    public String dueTasks(int taskNum, String dueDate) throws ParseException {
        if(signedIn() == true)
            taskTracker.setDueDate(taskNum, dueDate);
+       else return "Not signed in to Task Tracker";
+       return "";
     }
 
     @Command(name = "tag")
-    public void tagWithKeywords(int taskNum, String tags){
+    public String tagWithKeywords(int taskNum, String tags){
         if(signedIn() == true)
             taskTracker.addKeywords(taskNum, tags);
+        else return "Not signed in to Task Tracker";
+        return "";
     }
 
     @Command(name = "finish")
     public String markTaskAsDone(int taskNum){
         if(signedIn() == true)
             taskTracker.markTaskComplete(taskNum);
+        else return "Not signed in to Task Tracker";
         return "";
     }
 
@@ -145,14 +147,15 @@ public class ToDoListManager {
     public String cancelTask(int taskNum){
         if(signedIn() == true)
             taskTracker.cancelTask(taskNum);
+        else return "Not signed in to Task Tracker";
         return "";
     }
 
     @Command(name = "show")
     public String showTaskDetails(int taskNum){
-        if(signedIn() == true){
+        if(signedIn() == true)
             taskTracker.showTask(taskNum);
-        }
+        else return "Not signed in to Task Tracker";
         return "";
     }
 
@@ -160,6 +163,7 @@ public class ToDoListManager {
     public String showActivePerTag(String tag){
         if(signedIn() == true)
             taskTracker.showActiveForTag(tag);
+        else return "Not signed in to Task Tracker";
         return "";
     }
 
@@ -167,6 +171,7 @@ public class ToDoListManager {
     public String showCompletedPerTag(String tag){
         if(signedIn() == true)
             taskTracker.showCompletedTasks();
+        else return "Not signed in to Task Tracker";
         return "";
     }
 
@@ -174,6 +179,7 @@ public class ToDoListManager {
     public String showOverdue(){
         if(signedIn() == true)
             taskTracker.showOverdueTasks();
+        else return "Not signed in to Task Tracker";
         return "";
     }
 
@@ -181,6 +187,7 @@ public class ToDoListManager {
     public String showDueToday(){
         if(signedIn() == true)
             taskTracker.showOverdueTasks();
+        else return "Not signed in to Task Tracker";
         return "";
     }
 
@@ -188,6 +195,7 @@ public class ToDoListManager {
     public String showDueSoon(){
         if(signedIn() == true)
             taskTracker.showDueSoon();
+        else return "Not signed in to Task Tracker";
         return "";
     }
 
@@ -195,6 +203,7 @@ public class ToDoListManager {
     public String rename(int taskNum, String newName){
         if(signedIn() == true)
             taskTracker.renameTask(taskNum, newName);
+        else return "Not signed in to Task Tracker";
         return "";
     }
 
@@ -202,41 +211,9 @@ public class ToDoListManager {
     public String searchByKeyword(String keyword){
         if(signedIn() == true)
             taskTracker.searchByKeyword(keyword);
+        else return "Not signed in to Task Tracker";
         return "";
     }
-
-    /// BEGIN CONNECTION STUFF
-    public static Connection makeConnection() {
-        try {
-            //Connection conn = null;
-            conn = DriverManager.getConnection(
-                    //uses variabes to make connection
-                     "jdbc:mysql://localhost:" + db_portNum + "/test?verifyServerCertificate=false&useSSL=true", s_usr,
-                     s_pswd
-
-                    //This sign in is for Sadie
-//                    "jdbc:mysql://localhost:5818/test?verifyServerCertificate=false&useSSL=true", "msandbox",
-//                    "cs410*ss"
-
-                    //This sign in is for Steph
-//                    "jdbc:mysql://localhost:5785/test?verifyServerCertificate=false&useSSL=true", "msandbox",
-//                    "Sa03d48h!"
-            );
-            // Do something with the Connection
-            System.out.println("Database [test db] connection succeeded!");
-            System.out.println();
-            return conn;
-        } catch (SQLException ex) {
-            // handle any errors
-            System.err.println("SQLException: " + ex.getMessage());
-            System.err.println("SQLState: " + ex.getSQLState());
-            System.err.println("VendorError: " + ex.getErrorCode());
-        }
-        return null;
-    }
-
-
-    /// END CONNECTION STUFF
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException, ClassNotFoundException, JSchException {
         try {
@@ -249,7 +226,7 @@ public class ToDoListManager {
 //            DatabaseManager.runQuery(connection);
 //            System.out.println("Connection made!");
 
-            ShellFactory.createConsoleShell("ToDoList_Manager", "Welcome to ToDoList_Manager!\nTo start, type" +
+            ShellFactory.createConsoleShell("ToDoList_Manager", "Welcome to Task Tracker!\nTo start, type" +
                             " 'ssh', followed by Bronco credentials , Sandbox credentials, and user port number.\n" +
                             "Type 'help' or '-h' for help.\n",
                     new ToDoListManager()).commandLoop();
