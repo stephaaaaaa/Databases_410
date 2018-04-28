@@ -26,6 +26,7 @@ public class ToDoListManager {
     private static Statement stmt, stmt2;
 
     public ToDoListManager(){
+        isSignedIn = false;
         //isSignedIn = true; // set to true for testing purposes, and false for deployment
         usageMessage_NotSignedIn = "Type 'ssh'. Then, enter Bronco credentials, sandbox credentials, and your port number.\n" +
                 "<Bronco User> <Bronco Password> <Sandbox User> <Sandbox Password> <Port Number>\n";
@@ -37,16 +38,12 @@ public class ToDoListManager {
                 + "'completed' + \"[keyword]\" \t\t\t\t\t= show the completed tasks associated with the tag\n'overdue' \t\t\t\t\t\t\t\t\t= show all overdue tasks\n"
                 + "'due today' \t\t\t\t\t\t\t\t= show all tasks due today\n'due soon' \t\t\t\t\t\t\t\t\t= show all tasks due in the next 3 days\n'rename' + [task_id] + \"[label]\" \t\t\t= rename the designated task\n"
                 + "'search' + [token] \t\t\t\t\t\t\t= return all the tasks that contain the token in their label\n";
-        //conn = makeConnection(); //moved to ssh so that we have credentials to sign in
-        //taskTracker = new TaskTracker(); //need to pass conn into TaskTracker //moved to ssh for same reason
     }
 
     @Command(name = "ssh")
     public String enterCredentials(String bronco_user, String bronco_password,
                                  String sandbox_user, String sandbox_password, int portNum)
                     throws JSchException, ClassNotFoundException, SQLException{
-        // assigning to local method variables to make sure that ssh + args is working
-        isSignedIn = false;
 
         b_usr = bronco_user;
         b_pswd = bronco_password;
@@ -56,7 +53,6 @@ public class ToDoListManager {
 
         SSH_Manager ssh_man = new SSH_Manager(conn, session, stmt, stmt2);
         ssh_man.sshSignIn(b_usr, b_pswd, s_usr, s_pswd, pNum);
-        System.out.println("passed the signIn function in ssh_manager");
 
         taskTracker = new TaskTracker(conn);
         isSignedIn = true;
@@ -71,7 +67,19 @@ public class ToDoListManager {
     }
 
     @Command(name = "exit")
-    public String exit(){
+    public String exit() throws SQLException{
+        if(stmt!=null)
+            stmt.close();
+
+        if(stmt2!=null)
+            stmt.close();
+
+        if(conn != null)
+            conn.close();
+
+        if(session != null)
+            session.disconnect();
+
         return "Exiting ToDoList_Manager ...";
     }
 
@@ -232,18 +240,16 @@ public class ToDoListManager {
             ShellFactory.createConsoleShell("ToDoList_Manager", "Welcome to ToDoList_Manager!\nTo start, type" +
                             " 'ssh', followed by Bronco credentials , Sandbox credentials, and user port number.\n" +
                             "Type 'help' or '-h' for help.\n",
-                    // Bronco credentials, sandbox credentials, and user port number.
                     new ToDoListManager()).commandLoop();
 
-            //Connection conn = makeConnection();
 
-            //runQuery(conn);
-            conn.close();
-            System.out.println();
-            System.out.println("Database [test db] connection closed");
-            System.out.println();
+//
+//            runQuery(conn);
+//            conn.close();
+//            System.out.println();
+//            System.out.println("Database [test db] connection closed");
+//            System.out.println();
         } catch (Exception ex) {
-            // handle the error
             System.err.println(ex);
         }
 
