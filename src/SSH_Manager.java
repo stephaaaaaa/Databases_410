@@ -17,7 +17,7 @@ public class SSH_Manager {
         this.stmt2 = stmt2;
     }
 
-    public static String sshSignIn(String bronco_user, String bronco_password, String sandbox_user,
+    public static Session sshSignIn(String bronco_user, String bronco_password, String sandbox_user,
                                  String sandbox_password, int user_PortNum)
     throws  SQLException, ClassNotFoundException, JSchException{
 
@@ -77,7 +77,7 @@ public class SSH_Manager {
                 conn.rollback(); // In case of any exception, we roll back to the database state we had before starting this transaction
             }
 
-            return "Sign in successful.";
+            return sess;
 
     }
 

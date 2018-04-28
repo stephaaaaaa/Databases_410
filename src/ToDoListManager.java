@@ -20,7 +20,7 @@ public class ToDoListManager {
     private static String b_pswd;
     private static String s_usr;
     private static String s_pswd;
-    private static int pNum;
+    private static int db_portNum;
     private static Connection conn;
     private static Session session;
     private static Statement stmt, stmt2;
@@ -40,6 +40,14 @@ public class ToDoListManager {
                 + "'search' + [token] \t\t\t\t\t\t\t= return all the tasks that contain the token in their label\n";
     }
 
+    private Connection loadDB(int pNum, String sb_usr, String sb_pswd) throws ClassNotFoundException, SQLException{
+        Class.forName("com.mysql.jdbc.Driver");
+        String connectionURL = "jdbc:mysql://localhost:64736" + "/todo"
+                + "?verifyServerCertificate=false&useSSL=true";
+        Connection newConn = DriverManager.getConnection(connectionURL, sb_usr, sb_pswd);
+        return newConn;
+    }
+
     @Command(name = "ssh")
     public String enterCredentials(String bronco_user, String bronco_password,
                                  String sandbox_user, String sandbox_password, int portNum)
@@ -49,10 +57,13 @@ public class ToDoListManager {
         b_pswd = bronco_password;
         s_usr = sandbox_user;
         s_pswd = sandbox_password;
-        pNum = portNum;
+        db_portNum = portNum;
 
-        SSH_Manager ssh_man = new SSH_Manager(conn, session, stmt, stmt2);
-        ssh_man.sshSignIn(b_usr, b_pswd, s_usr, s_pswd, pNum);
+        //SSH_Manager ssh_man = new SSH_Manager(conn, session, stmt, stmt2);
+        session = SSH_Manager.sshSignIn(b_usr, b_pswd, s_usr, s_pswd, db_portNum);
+        System.out.println("Successfully established SSH Connection.");
+        conn = loadDB(db_portNum, s_usr, s_pswd);
+        System.out.println("Successfully established DB connection.");
 
         taskTracker = new TaskTracker(conn);
         isSignedIn = true;
@@ -104,9 +115,10 @@ public class ToDoListManager {
 
     // Works, except for the task ID
     @Command(name = "add")
-    public void add(String newTaskLabel){
+    public String add(String newTaskLabel){
         if(signedIn() == true)
             taskTracker.addTask(newTaskLabel);
+        return "Not signed in to Task Tracker.";
     }
 
     // Works
@@ -199,7 +211,7 @@ public class ToDoListManager {
             //Connection conn = null;
             conn = DriverManager.getConnection(
                     //uses variabes to make connection
-                     "jdbc:mysql://localhost:" + pNum + "/test?verifyServerCertificate=false&useSSL=true", s_usr,
+                     "jdbc:mysql://localhost:" + db_portNum + "/test?verifyServerCertificate=false&useSSL=true", s_usr,
                      s_pswd
 
                     //This sign in is for Sadie
