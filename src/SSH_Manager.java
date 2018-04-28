@@ -40,33 +40,36 @@ public class SSH_Manager {
 
                 // Load database driver and get connection
                 Class.forName("com.mysql.jdbc.Driver");
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:"+nLocalPort, strDbUser, strDbPassword);
+                String connectionURL = "jdbc:mysql://localhost:" + nLocalPort + "/CS410_Database"
+                        + "?verifyServerCertificate=false&useSSL=true";
+                conn = DriverManager.getConnection(connectionURL, strDbUser, strDbPassword);
 
 
-                // Executing transactions
-                conn.setAutoCommit(false);//transaction block starts
-                stmt = conn.createStatement();
-                ResultSet resultSet = stmt.executeQuery("select * from `Company`.`employee`");
-
-                // Insert into tables
-                String[] data = {"boise", "nampa"};
-                stmt2 = insertLocations(conn,data);
-               conn.commit(); //transaction block ends
-
-                System.out.println("Transaction done!");
-
-               // Use tables to navigate through results
-                ResultSetMetaData rsmd = resultSet.getMetaData();
-
-                int columnsNumber = rsmd.getColumnCount();
-                while (resultSet.next()) {
-                    for (int i = 1; i <= columnsNumber; i++) {
-                        if (i > 1) System.out.print(",  ");
-                        String columnValue = resultSet.getString(i);
-                        System.out.print(columnValue + " " + rsmd.getColumnName(i));
-                    }
-                    System.out.println(" ");
-                }
+                // COMMENTING OUT IN ORDER TO BYPASS TRANSACTIONS STUFF
+//                // Executing transactions
+//                conn.setAutoCommit(false);//transaction block starts
+//                stmt = conn.createStatement();
+//                ResultSet resultSet = stmt.executeQuery("select * from `Company`.`employee`");
+//
+//                // Insert into tables
+//                String[] data = {"boise", "nampa"};
+//                stmt2 = insertLocations(conn,data);
+//               conn.commit(); //transaction block ends
+//
+//                System.out.println("Transaction done!");
+//
+//               // Use tables to navigate through results
+//                ResultSetMetaData rsmd = resultSet.getMetaData();
+//
+//                int columnsNumber = rsmd.getColumnCount();
+//                while (resultSet.next()) {
+//                    for (int i = 1; i <= columnsNumber; i++) {
+//                        if (i > 1) System.out.print(",  ");
+//                        String columnValue = resultSet.getString(i);
+//                        System.out.print(columnValue + " " + rsmd.getColumnName(i));
+//                    }
+//                    System.out.println(" ");
+//                }
             }
             catch( SQLException e )
             {
