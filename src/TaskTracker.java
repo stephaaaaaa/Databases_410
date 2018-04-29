@@ -50,7 +50,9 @@ public class TaskTracker {
     	Queries.run_UpdateQuery(query, conn);
     }
 
-    // works
+    /** works, only if the tag doesn't exist for a tag.
+	 ** Look into if else, for SQL queries?
+	*/
     public void addKeywords(int taskNum, String tags) {
 		String query = "UPDATE task set tag = concat(tag, " + "\" " + tags + " \"" + ")" +
 		"WHERE task_id = " + taskNum;
