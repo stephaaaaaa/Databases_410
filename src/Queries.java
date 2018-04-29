@@ -32,7 +32,7 @@ public class Queries {
         }
     }
 
-    public static void run_ActiveQuery(String query, Connection conn) {
+    public static void run_DisplayQuery(String query, Connection conn) {
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
@@ -43,8 +43,13 @@ public class Queries {
             boolean rowsLeft = true;
             rs.first();
             while (rowsLeft) {
-                System.out.println("Task "+ rs.getInt(1) + ":\n\"" + rs.getString(2) + "\"\nCreation Date: " +
-                        rs.getString(3) + "\nDue Date: " + rs.getString(4) + "\n");
+                System.out.println(
+                        "Task "+ rs.getInt("task_id") + ":\n\"" +
+                        rs.getString("task_label") +
+                        "\"\nCreation Date: " + rs.getString("time_stamp") +
+                        "\nDue Date: " +
+                        rs.getString("due_date") + "\n" +
+                        "Tags: " + rs.getString("tag") + "\n");
                 rowsLeft = rs.next();
             }
         } catch (SQLException ex) {

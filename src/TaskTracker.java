@@ -1,7 +1,6 @@
 import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.sql.*;
 
 /**
@@ -12,7 +11,6 @@ import java.sql.*;
  * @author Stephanie Labastida
  */
 public class TaskTracker {
-    private LinkedList<Task> taskList;
     private Date today;
     private String activeTasks;
     private static Connection conn;
@@ -20,7 +18,6 @@ public class TaskTracker {
 
     public TaskTracker(Connection conn){
     	this.conn = conn;
-        taskList = new LinkedList<>();
         today = new Date(); // gets the current date and time
         activeTasks = "------------------------- ACTIVE TASKS -------------------------\n";
 
@@ -30,11 +27,11 @@ public class TaskTracker {
 		// for(Task task:taskList){
 		//if(task.getActiveStatus() == true) {
 		String query =
-				"SELECT task.task_id, task.task_label, task.time_stamp, task.due_date " +
+				"SELECT task.task_id, task.task_label, task.time_stamp, task.due_date, task.tag, task.is_complete, task.is_cancelled " +
 						"FROM task " +
 						"WHERE task.is_complete = 0 " +
 						"AND task.is_cancelled = 0;";
-		Queries.run_ActiveQuery(query, conn);
+		Queries.run_DisplayQuery(query, conn);
 	}
 
     public void addTask(String taskName){
@@ -42,22 +39,25 @@ public class TaskTracker {
 		Queries.run_UpdateQuery(query, conn);
 	}
 
-    // Setting return value to String so an error message can be returned
     public void setDueDate(int taskNum, String dueDate) throws ParseException{
         String query = "UPDATE task SET task.due_date = " + "\"" + dueDate + "\"" + "WHERE task_id = " +
 				"\"" + taskNum + "\"" + ";";
         Queries.run_UpdateQuery(query, conn);
     }
 
-    public void removeTask(String taskName){
+	/**
+	 * FOR TESTING PURPOSES ONLY
+	 */
+	public void removeTask(String taskName){
     	String query = "DELETE FROM task WHERE task_label = " + "\"" +taskName + "\"" + ";";
     	Queries.run_UpdateQuery(query, conn);
     }
 
 
     public void addKeywords(int taskNum, String tags) {
-		String query = "UPDATE task SET task.tag = " + tags + " WHERE task_id = " + taskNum + ";";
-		Queries.run_AddKeywordQuery(query);
+		String query = "UPDATE task SET task.tag = " + "\"" + tags + "\"" + " WHERE task_id = " +
+				"\"" + taskNum + "\"" + ";";
+		Queries.run_UpdateQuery(query, conn);
 	}
 
     public void markTaskComplete(int taskNum) {

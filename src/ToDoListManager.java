@@ -118,7 +118,21 @@ public class ToDoListManager {
         return "";
     }
 
-    // Works
+    /**
+     * FOR TESTING PURPOSES ONLY
+     * REMOVE FOR SUBMISSION
+     *
+     * @param taskName
+     * @return
+     */
+    @Command(name = "delete")
+    public String delete(String taskName){
+        if(signedIn() == true)
+            taskTracker.removeTask(taskName);
+        else return "Not signed in to Task Tracker";
+        return "";
+    }
+
     @Command(name = "due")
     public String dueTasks(int taskNum, String dueDate) throws ParseException {
        if(signedIn() == true)
