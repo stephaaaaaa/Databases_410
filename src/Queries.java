@@ -42,8 +42,9 @@ public class Queries {
 
             boolean rowsLeft = true;
             rs.first();
-            while (rowsLeft) {
-                //if(rs.next()) {
+            //if(rs.next()) {
+                while (rowsLeft) {
+                    //if(rs.next()) {
                     System.out.println(
                             "Task " + rs.getInt("task_id") + ":\n\"" +
                                     rs.getString("task_label") +
@@ -53,10 +54,10 @@ public class Queries {
                                     "Tags: " + rs.getString("tag") + "\n" /*+
                         "Completed: " + rs.getString("is_complete") + "\n" +
                         "Canceled: " + rs.getString("is_cancelled") + "\n"*/);
-                //}
-                rowsLeft = rs.next();
-            }
-
+                    //}
+                    rowsLeft = rs.next();
+                }
+            //}
         } catch (SQLException ex) {
             sqlExceptionCatch(ex);
         } finally {

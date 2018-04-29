@@ -122,13 +122,13 @@ public class ToDoListManager {
      * FOR TESTING PURPOSES ONLY
      * REMOVE FOR SUBMISSION
      *
-     * @param taskName
+     * @param taskNum
      * @return
      */
     @Command(name = "delete")
-    public String delete(String taskName){
+    public String delete(int taskNum){
         if(signedIn() == true)
-            taskTracker.removeTask(taskName);
+            taskTracker.removeTask(taskNum);
         else return "Not signed in to Task Tracker";
         return "";
     }

@@ -44,11 +44,9 @@ public class TaskTracker {
         Queries.run_UpdateQuery(query, conn);
     }
 
-	/**
-	 * FOR TESTING PURPOSES ONLY
-	 */
-	public void removeTask(String taskName){
-    	String query = "DELETE FROM task WHERE task_label = " + "\"" +taskName + "\"" + ";";
+	// helper for cancel
+	private void removeTask(int taskNum){
+    	String query = "DELETE FROM task WHERE task_id = " + "\"" +taskNum + "\"" + ";";
     	Queries.run_UpdateQuery(query, conn);
     }
 
@@ -69,6 +67,7 @@ public class TaskTracker {
     public void cancelTask(int taskNum){
     	String query = "UPDATE task SET task.is_cancelled = 1 WHERE task_id = " + "\"" + taskNum + "\"" + ";";
     	Queries.run_UpdateQuery(query, conn);
+		removeTask(taskNum);
     }
 
     // works
@@ -101,12 +100,7 @@ public class TaskTracker {
     	Queries.run_DisplayQuery(query, conn);
     }
 
-	/**
-	 * HAS ISSUES
-	 * If you add "AND is_complete = 0, it will return with errors, even if
-	 * when you do it in SQL, it returns fine. This may have to do with
-	 * the method in queries not accounting for if the result is null
-	 */
+
 	public void showDueToday() {
     	String query = "SELECT * FROM task " +
     			"WHERE task.due_date = curdate()";
