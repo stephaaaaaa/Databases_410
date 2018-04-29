@@ -54,8 +54,14 @@ public class TaskTracker {
 	 ** Look into if else, for SQL queries?
 	*/
     public void addKeywords(int taskNum, String tags) {
-		String query = "UPDATE task set tag = concat(tag, " + "\" " + tags + " \"" + ")" +
-		"WHERE task_id = " + taskNum;
+
+		String query = "UPDATE task " +
+				"SET tag = CASE " +
+				"WHEN (SELECT tag) IS NULL " +
+				"THEN " + "\" " + tags + " \"" +
+				"ELSE concat(tag, " + "\" " + tags + " \"" + ") " +
+				"END " +
+				"WHERE task_id = " + taskNum + ";";
 		Queries.run_UpdateQuery(query, conn);
 	}
 
