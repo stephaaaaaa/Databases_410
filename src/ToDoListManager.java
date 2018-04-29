@@ -28,7 +28,7 @@ public class ToDoListManager {
     public ToDoListManager(){
         isSignedIn = false;
         //isSignedIn = true; // set to true for testing purposes, and false for deployment
-        usageMessage_NotSignedIn = "Type 'ssh'. Then, enter Bronco credentials, sandbox credentials, and your port number.\n" +
+        usageMessage_NotSignedIn = "Type 'ssh'. Then, enter Bronco credentials, sandbox credentials, and your database's port number.\n" +
                 "<Bronco User> <Bronco Password> <Sandbox User> <Sandbox Password> <Port Number>\n";
         usageMessage_SignedIn = "Usage:\n'active' \t\t\t\t\t\t\t\t\t= shows all active tasks\n'add' + "
                 + "\"[label]\" \t\t\t\t\t\t\t= create a new task\n"
@@ -36,7 +36,7 @@ public class ToDoListManager {
                 + "'finish' + [task_id] \t\t\t\t\t\t= mark a task as completed\n'cancel' + [task_id] \t\t\t\t\t\t= mark a task as inactive\n"
                 + "'show' + [task_id] \t\t\t\t\t\t\t= show the details of the designated task\n'active' + \"[keyword]\" \t\t\t\t\t\t= show active tasks associated with the keyword\n"
                 + "'completed' + \"[keyword]\" \t\t\t\t\t= show the completed tasks associated with the tag\n'overdue' \t\t\t\t\t\t\t\t\t= show all overdue tasks\n"
-                + "'due today' \t\t\t\t\t\t\t\t= show all tasks due today\n'due soon' \t\t\t\t\t\t\t\t\t= show all tasks due in the next 3 days\n'rename' + [task_id] + \"[label]\" \t\t\t= rename the designated task\n"
+                + "'dueToday' \t\t\t\t\t\t\t\t\t= show all tasks due today\n'dueSoon' \t\t\t\t\t\t\t\t\t= show all tasks due in the next 3 days\n'rename' + [task_id] + \"[label]\" \t\t\t= rename the designated task\n"
                 + "'search' + [token] \t\t\t\t\t\t\t= return all the tasks that contain the token in their label\n";
     }
 
@@ -91,7 +91,7 @@ public class ToDoListManager {
         if(session != null)
             session.disconnect();
 
-        return "Exiting ToDoList_Manager ...";
+        return "Exiting Task Tracker ...";
     }
 
     // helper method for all the task methods
@@ -184,7 +184,7 @@ public class ToDoListManager {
     @Command(name = "completed")
     public String showCompletedPerTag(String tag){
         if(signedIn() == true)
-            taskTracker.showCompletedTasks();
+            taskTracker.showCompletedTasks_ByTag(tag);
         else return "Not signed in to Task Tracker";
         return "";
     }
@@ -197,15 +197,15 @@ public class ToDoListManager {
         return "";
     }
 
-    @Command(name = "due today")
+    @Command(name = "dueToday")
     public String showDueToday(){
         if(signedIn() == true)
-            taskTracker.showOverdueTasks();
+            taskTracker.showDueToday();
         else return "Not signed in to Task Tracker";
         return "";
     }
 
-    @Command(name = "due soon")
+    @Command(name = "dueSoon")
     public String showDueSoon(){
         if(signedIn() == true)
             taskTracker.showDueSoon();

@@ -11,18 +11,14 @@ import java.sql.*;
  * @author Stephanie Labastida
  */
 public class TaskTracker {
-    private Date today;
-    private String activeTasks;
     private static Connection conn;
 
 
     public TaskTracker(Connection conn){
     	this.conn = conn;
-        today = new Date(); // gets the current date and time
-        activeTasks = "------------------------- ACTIVE TASKS -------------------------\n";
-
     }
 
+    // works, displays in order by date, with null due dates being last
 	public void showActiveTasks(){
 		// for(Task task:taskList){
 		//if(task.getActiveStatus() == true) {
@@ -30,15 +26,18 @@ public class TaskTracker {
 				"SELECT task.task_id, task.task_label, task.time_stamp, task.due_date, task.tag, task.is_complete, task.is_cancelled " +
 						"FROM task " +
 						"WHERE task.is_complete = 0 " +
-						"AND task.is_cancelled = 0;";
+						"AND task.is_cancelled = 0 " +
+						"order by -due_date desc;";
 		Queries.run_DisplayQuery(query, conn);
 	}
 
+	// works
     public void addTask(String taskName){
         String query = "INSERT INTO task (task_label) values (" + "\"" + taskName + "\"" + ");";
 		Queries.run_UpdateQuery(query, conn);
 	}
 
+	// works
     public void setDueDate(int taskNum, String dueDate) throws ParseException{
         String query = "UPDATE task SET task.due_date = " + "\"" + dueDate + "\"" + "WHERE task_id = " +
 				"\"" + taskNum + "\"" + ";";
@@ -53,73 +52,87 @@ public class TaskTracker {
     	Queries.run_UpdateQuery(query, conn);
     }
 
-
+    // works
     public void addKeywords(int taskNum, String tags) {
-		String query = "UPDATE task SET task.tag = " + "\"" + tags + "\"" + " WHERE task_id = " +
-				"\"" + taskNum + "\"" + ";";
+		String query = "UPDATE task set tag = concat(tag, " + "\" " + tags + " \"" + ")" +
+		"WHERE task_id = " + taskNum;
 		Queries.run_UpdateQuery(query, conn);
 	}
 
+	// works
     public void markTaskComplete(int taskNum) {
-    	String query = "UPDATE task SET task.is_complete = 1 WHERE task_id = " + taskNum + ";";
-    	Queries.run_TaskCompleteQuery(query);
+    	String query = "UPDATE task SET task.is_complete = 1 WHERE task_id = " + "\"" + taskNum + "\"" + ";";
+    	Queries.run_UpdateQuery(query, conn);
     }
 
+    // works
     public void cancelTask(int taskNum){
-    	String query = "UPDATE task SET task.is_cancelled = 1 WHERE task_id = " + taskNum + ";";
-    	Queries.run_CancelTaskQuery(query);
+    	String query = "UPDATE task SET task.is_cancelled = 1 WHERE task_id = " + "\"" + taskNum + "\"" + ";";
+    	Queries.run_UpdateQuery(query, conn);
     }
 
+    // works
     public void showTask(int taskNum){
-    	String query = "SELECT * FROM task WHERE task.task_id = " + taskNum + ";";
-    	Queries.run_ShowTaskQuery(query);
+    	String query = "SELECT * FROM task WHERE task.task_id = " + "\"" +  taskNum + "\"" + ";";
+    	Queries.run_DisplayQuery(query, conn);
     }
 
+    // works
     public void showActiveForTag(String tag){
     	String query = "SELECT * FROM task "
     			+ "WHERE task.is_complete = 0 "
     			+ "AND task.is_cancelled = 0 "
-    			+ "AND task.tag LIKE " + tag + ";";
-    	Queries.run_ShowActiveTagQuery(query);
+    			+ "AND task.tag LIKE " + "\"%" + tag + "%\"" + ";";
+    	Queries.run_DisplayQuery(query, conn);
     }
 
-    public void showCompletedTasks(){
+    // works
+    public void showCompletedTasks_ByTag(String tag){
     	String query = "SELECT * FROM task "
-    			+ "WHERE task.is_complete = 1;";
-    	Queries.run_CompletedTasksQuery(query);
+    			+ "WHERE task.is_complete = 1" + " AND tag = " + "\"" + tag + "\"" + ";";
+    	Queries.run_DisplayQuery(query, conn);
     }
 
+    // works
     public void showOverdueTasks(){
     	String query = "SELECT * FROM task " +
-    			"WHERE task.due_date < TIMESTAMP() " +
+    			"WHERE task.due_date < curdate() " +
     			"AND task.is_complete = 0;";
-    	Queries.run_OverdueTasksQuery(query);
+    	Queries.run_DisplayQuery(query, conn);
     }
 
-    public void showDueToday() {
+	/**
+	 * HAS ISSUES
+	 * If you add "AND is_complete = 0, it will return with errors, even if
+	 * when you do it in SQL, it returns fine. This may have to do with
+	 * the method in queries not accounting for if the result is null
+	 */
+	public void showDueToday() {
     	String query = "SELECT * FROM task " +
-    			"WHERE task.due_date = EXTRACT DATE FROM TIMESTAMP();";
-    	Queries.run_DueTodayQuery(query);
-
+    			"WHERE task.due_date = curdate()";
+    	Queries.run_DisplayQuery(query, conn);
     }
 
+    // works
     public void showDueSoon(){
     	String query = "SELECT * FROM task " +
-    			"WHERE task.due_date <= DATEADD(day, 3, EXTRACT DATE FROM TIMESTAMP()) " +
-    			"AND task.due_date >= EXTRACT DATE FROM TIMESTAMP();";
-    	Queries.run_DueSoonQuery(query);
+    			"WHERE task.due_date <= date_add(curdate(), interval 3 DAY) " +
+    			"AND task.due_date >= curdate() AND is_complete = 0;";
+    	Queries.run_DisplayQuery(query, conn);
     }
 
+    // works
     public void renameTask(int taskNum, String newLabel){
     	String query = "UPDATE task " +
-    			"SET task.label = " + newLabel +
-    			"WHERE task_id = " + taskNum + ";";
-    	Queries.run_RenameQuery(query);
+    			"SET task_label = " + "\"" + newLabel + "\"" +
+    			"WHERE task_id = " + "\"" + taskNum + "\"" + ";";
+    	Queries.run_UpdateQuery(query, conn);
     }
 
+    // works
     public void searchByKeyword(String keyword){
-    	String query = "SELECT * FROM task " +
-    			"WHERE task.task_label LIKE " + keyword + ";";
-    	Queries.run_SearchKeywordQuery(query);
+    	String query = "SELECT * FROM task "
+				+ "WHERE task.tag LIKE " + "\"%" + keyword + "%\"" + ";";
+    	Queries.run_DisplayQuery(query, conn);
     }
 }

@@ -43,15 +43,20 @@ public class Queries {
             boolean rowsLeft = true;
             rs.first();
             while (rowsLeft) {
-                System.out.println(
-                        "Task "+ rs.getInt("task_id") + ":\n\"" +
-                        rs.getString("task_label") +
-                        "\"\nCreation Date: " + rs.getString("time_stamp") +
-                        "\nDue Date: " +
-                        rs.getString("due_date") + "\n" +
-                        "Tags: " + rs.getString("tag") + "\n");
+                //if(rs.next()) {
+                    System.out.println(
+                            "Task " + rs.getInt("task_id") + ":\n\"" +
+                                    rs.getString("task_label") +
+                                    "\"\nCreation Date: " + rs.getString("time_stamp") +
+                                    "\nDue Date: " +
+                                    rs.getString("due_date") + "\n" +
+                                    "Tags: " + rs.getString("tag") + "\n" /*+
+                        "Completed: " + rs.getString("is_complete") + "\n" +
+                        "Canceled: " + rs.getString("is_cancelled") + "\n"*/);
+                //}
                 rowsLeft = rs.next();
             }
+
         } catch (SQLException ex) {
             sqlExceptionCatch(ex);
         } finally {
@@ -59,7 +64,7 @@ public class Queries {
         }
     }
 
-    public static void run_UpdateQuery(String query, Connection conn){
+    public static void run_UpdateQuery(String query, Connection conn) {
         PreparedStatement stmt = null;
         int result = 0;
 
@@ -79,44 +84,5 @@ public class Queries {
         } finally {
             //finallyBehavior(result, stmt);
         }
-    }
-
-    public static void run_SetDueDateQuery(String query) {
-    }
-
-    public static void run_RemoveTaskQuery(String query) {
-    }
-
-    public static void run_AddKeywordQuery(String query) {
-    }
-
-    public static void run_TaskCompleteQuery(String query) {
-    }
-
-    public static void run_CancelTaskQuery(String query) {
-    }
-
-    public static void run_ShowTaskQuery(String query) {
-    }
-
-    public static void run_ShowActiveTagQuery(String query) {
-    }
-
-    public static void run_CompletedTasksQuery(String query) {
-    }
-
-    public static void run_OverdueTasksQuery(String query) {
-    }
-
-    public static void run_DueTodayQuery(String query) {
-    }
-
-    public static void run_DueSoonQuery(String query) {
-    }
-
-    public static void run_RenameQuery(String query) {
-    }
-
-    public static void run_SearchKeywordQuery(String query) {
     }
 }
