@@ -42,7 +42,7 @@ public class ToDoListManager {
 
     private Connection loadDB(int pNum, String sb_usr, String sb_pswd) throws ClassNotFoundException, SQLException{
         Class.forName("com.mysql.jdbc.Driver");
-        String connectionURL = "jdbc:mysql://localhost:64736" + "/todo"
+        String connectionURL = "jdbc:mysql://localhost:64736" + "/todo" // 64736 is
                 + "?verifyServerCertificate=false&useSSL=true";
         Connection newConn = DriverManager.getConnection(connectionURL, sb_usr, sb_pswd);
         return newConn;
@@ -115,21 +115,6 @@ public class ToDoListManager {
         if(signedIn() == true)
             taskTracker.addTask(newTaskLabel);
         else return "Not signed in to Task Tracker.";
-        return "";
-    }
-
-    /**
-     * FOR TESTING PURPOSES ONLY
-     * REMOVE FOR SUBMISSION
-     *
-     * @param taskNum
-     * @return
-     */
-    @Command(name = "delete")
-    public String delete(int taskNum){
-        if(signedIn() == true)
-            taskTracker.removeTask(taskNum);
-        else return "Not signed in to Task Tracker";
         return "";
     }
 

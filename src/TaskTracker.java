@@ -1,6 +1,4 @@
 import java.text.ParseException;
-import java.util.LinkedList;
-import java.util.Date;
 import java.sql.*;
 
 /**
@@ -50,9 +48,6 @@ public class TaskTracker {
     	Queries.run_UpdateQuery(query, conn);
     }
 
-    /** works, only if the tag doesn't exist for a tag.
-	 ** Look into if else, for SQL queries?
-	*/
     public void addKeywords(int taskNum, String tags) {
 
 		String query = "UPDATE task " +
@@ -119,7 +114,7 @@ public class TaskTracker {
     public void showDueSoon(){
     	String query = "SELECT * FROM task " +
     			"WHERE task.due_date <= date_add(curdate(), interval 3 DAY) " +
-    			"AND task.due_date >= curdate() AND is_complete = 0;";
+    			"AND task.due_date >= curdate() AND is_complete = 0 ORDER BY -due_date desc;";
     	Queries.run_DisplayQuery(query, conn);
     }
 
